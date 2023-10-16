@@ -30,10 +30,6 @@ function Register(props) {
 
       const response = await axios.request(config);
 
-      // console.log("API Response:", response.data);
-
-      // const { token } = response.data.data;
-
       localStorage.setItem("token", response.data.data.token);
 
       props.onHide();

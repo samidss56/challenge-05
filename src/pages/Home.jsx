@@ -13,7 +13,7 @@ const Home = () => {
   const [userHasToken, setUserHasToken] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const baseUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = "https://shy-cloud-3319.fly.dev";
 
   const getPopularMovies = async () => {
     try {
@@ -45,6 +45,7 @@ const Home = () => {
   }, []);
 
   const PopularMovieList = () => {
+    
     if (loading) {
       return <div className="text-black">Loading...</div>;
     }
@@ -54,7 +55,7 @@ const Home = () => {
     }
 
     const moviesToDisplay =
-      searchResults.length > 0 ? searchResults : popularMovies;
+      searchResults.length >= 2 ? searchResults : popularMovies;
 
     return (
       <div className="Movie-container">
@@ -63,9 +64,7 @@ const Home = () => {
             <div className="Movie-wrapper mb-4 mx-1" key={i}>
               <img
                 className="Movie-image"
-                src={`${import.meta.env.VITE_APP_BASEIMGURL}/${
-                  movie.poster_path
-                }`}
+                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                 alt={movie.title}
                 style={{ width: "200px", borderRadius: "10px" }}
               />

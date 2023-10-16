@@ -9,7 +9,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { searchMovie } from "../api";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
@@ -19,12 +18,26 @@ const NavbarComponent = ({ onSearchResults }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [user, setUser] = useState(null);
-  // const navigate = useNavigate()
 
   const search = async (q) => {
     if (q.length > 3) {
-      const query = await searchMovie(q);
-      onSearchResults(query.results);
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/search/movie?page=1&query=${q}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        onSearchResults(response.data.data); 
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
     }
   };
 
@@ -34,7 +47,6 @@ const NavbarComponent = ({ onSearchResults }) => {
     localStorage.removeItem("token");
 
     window.location.replace("/");
-    // navigate("/")
   };
 
   useEffect(() => {
